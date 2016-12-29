@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Film {
-    private Integer film_id;
+    private Integer filmId;
 
     private String title;
 
@@ -52,12 +52,14 @@ public class Film {
 		this.name = name;
 	}
 
-	public Integer getFilm_id() {
-		return film_id;
+	
+
+	public Integer getFilmId() {
+		return filmId;
 	}
 
-	public void setFilm_id(Integer film_id) {
-		this.film_id = film_id;
+	public void setFilmId(Integer filmId) {
+		this.filmId = filmId;
 	}
 
 	public String getTitle() {

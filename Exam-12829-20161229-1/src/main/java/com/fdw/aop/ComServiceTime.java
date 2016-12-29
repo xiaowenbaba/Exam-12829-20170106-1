@@ -17,7 +17,7 @@ public class ComServiceTime {
 	private void anyMethod1() {
 		
 	}//声明一个切入点	
-
+	
 	@Around("anyMethod1()")//环绕通知
 	public Object doBasicProfiling(ProceedingJoinPoint pjp) throws Throwable {
 		long begin = System.currentTimeMillis(); 

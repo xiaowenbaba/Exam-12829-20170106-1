@@ -15,7 +15,7 @@ public class App
     		ClassPathXmlApplicationContext beanFactory = new ClassPathXmlApplicationContext("classpath:spring-mybatis.xml",
     				"classpath:mybatis-config.xml");
     		Test test = (Test)beanFactory.getBean("test");
-    		test.start();
+    		
     	
     }
 }
