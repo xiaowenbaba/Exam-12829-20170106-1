@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.fdw.dao.FilmDao;
 import com.fdw.entity.Film;
 
-@Service
+
 public class FilmService {
-	@Autowired
+	
 	private FilmDao  filmDao;
 	 
 	public void setFilmDao(FilmDao filmDao) {

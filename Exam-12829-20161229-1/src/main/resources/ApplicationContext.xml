@@ -48,7 +48,9 @@ xmlns:tx="http://www.springframework.org/schema/tx"
  <bean id="filmService" class="com.fdw.service.FilmService">
  		<property name="filmDao" value="filmDao"></property>
  </bean> -->
-  
+  <bean id="filmService" class="com.fdw.service.FilmService">
+ 		<property name="filmDao" ref="filmDao"></property>
+ </bean>
 
  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="user" value="${jdbc.user}" />
