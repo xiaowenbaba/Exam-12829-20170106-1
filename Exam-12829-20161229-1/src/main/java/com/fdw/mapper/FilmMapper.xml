@@ -3,15 +3,6 @@
 <mapper namespace="com.fdw.mapper.FilmMapper">
 
 	<insert id="insertOneInToFilm" parameterType="com.fdw.entity.Film">
-	 insert into  film  (title,description,language_id) 
-	 values(
-	 	<if test="title!=null and !&quot;&quot;.equals(title)">
-	 	#{title}
-	 	</if>
-	 	,#{description},
-	 	<if test="languageId!=null and !&quot;&quot;.equals(languageId)">
-	 	#{languageId}
-	 	</if>
-	 )
+	 insert into  film  (title,description,language_id) values(#{title},#{description},#{languageId})
 	</insert>
 </mapper>

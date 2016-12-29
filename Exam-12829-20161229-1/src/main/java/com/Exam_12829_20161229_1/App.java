@@ -26,15 +26,22 @@ public class App
     		Scanner scanner = new Scanner(System.in);
     		System.out.println("请输入电影名称");
     		String title = scanner.nextLine();
+    		if(!"".equals(title)&&title!=null){
+    			film.setTitle(title);
+    		}
     		Scanner scanner1 = new Scanner(System.in);
     		System.out.println("请输入电影描述");
+    		
     		String description = scanner1.nextLine();
+    		if(!"".equals(description)&&description!=null){
+    			film.setDescription(description);
+    		}
     		Scanner scanner2 = new Scanner(System.in);
     		System.out.println("请输入语言ID");
     		Integer language_id = scanner2.nextInt();
-    		film.setTitle(title);
-    		film.setDescription(description);
-    		film.setLanguageId(language_id);
+    		if(language_id!=null){
+    			film.setLanguageId(language_id);
+    		}
     		filmService.insertFilm(film);
     		configurableApplicationContext.close();
     }
