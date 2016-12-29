@@ -24,17 +24,16 @@ xmlns:tx="http://www.springframework.org/schema/tx"
   http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		 http://www.springframework.org/schema/aop 
-    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd"  >
+  	 http://www.springframework.org/schema/aop/spring-aop-4.0.xsd"  >
 
   <!-- 自动扫描 -->
 
-  <context:component-scan base-package="com.fdw.service" />
-  <context:component-scan base-package="com.fdw.controller" />
   <context:component-scan base-package="com.fdw.aop" />
-  <context:component-scan base-package="com.fdw.dao" />
   <context:component-scan base-package="com.fdw.event" />
-  <context:annotation-config></context:annotation-config>
+  <context:component-scan base-package="com.fdw.dao" />
+  <context:component-scan base-package="com.fdw.service" />
 	<aop:aspectj-autoproxy expose-proxy="true"></aop:aspectj-autoproxy>
+  <context:annotation-config></context:annotation-config>
 	
   <!-- 引入配置文件 -->
 <context:property-placeholder location="classpath:dbconfig.properties" />
@@ -45,8 +44,10 @@ xmlns:tx="http://www.springframework.org/schema/tx"
     <property name="location" value="classpath:jdbc.properties" />
 
   </bean> -->
-
- 
+<!-- <bean id="filmDao" class="com.fdw.dao.FilmDao"></bean>
+ <bean id="filmService" class="com.fdw.service.FilmService">
+ 		<property name="filmDao" value="filmDao"></property>
+ </bean> -->
 
  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="user" value="${jdbc.user}" />
@@ -61,7 +62,7 @@ xmlns:tx="http://www.springframework.org/schema/tx"
 
   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:ApplicationContext.xml"></property>
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
 	</bean>
 
  

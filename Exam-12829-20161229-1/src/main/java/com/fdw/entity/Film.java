@@ -22,7 +22,15 @@ public class Film {
 
     private String rating;
 
-    private String specialFeatures;
+    public Integer getLanguageId() {
+		return languageId;
+	}
+
+	public void setLanguageId(Integer languageId) {
+		this.languageId = languageId;
+	}
+
+	private String specialFeatures;
 
     private Date lastUpdate;
 
@@ -30,7 +38,7 @@ public class Film {
     
     private String description;
     
-
+    private Integer languageId;
 
 	
 
