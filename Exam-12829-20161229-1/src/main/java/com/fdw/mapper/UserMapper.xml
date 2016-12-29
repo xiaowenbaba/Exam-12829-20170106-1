@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fdw.mapper.UserMapper">
+	<select id="selectUserByFirstOrLastName" resultType="com.fdw.entity.User" parameterType="com.fdw.entity.User">
+	select id,first_name,last_name,last_updated_time from user
+	 where first_name like  #{firstName} or last_name like #{lastName}
+	</select>
+
+	<insert id="insertBatch" parameterType="list">
+	 insert into  user  (first_name,last_name) values
+	 <foreach item="item" collection="list" separator=",">
+		  (#{item.firstName} ,#{item.lastName})
+	 </foreach>
+	</insert>
+	<delete id="deleteByIdOrName" parameterType="com.fdw.entity.User">
+		delete from user where id=#{id}
+	</delete>
+</mapper>
