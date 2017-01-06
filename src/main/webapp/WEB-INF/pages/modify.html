@@ -1,0 +1,106 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>更改界面</title>
+    <link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="form-horizontal" role="form">
+            <div class="form-group col-sm-6" >
+                <label for="title" class="col-sm-6 control-label">title：</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="title" placeholder="请输入title">
+                    <input type="hidden"  id="filmId">
+                </div>
+                <label for="description" class="col-sm-6 control-label">description：</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="description" placeholder="请输入description">
+                </div>
+                <label for="language" class="col-sm-6 control-label">语言</label>
+					<div class="col-sm-5">
+						<select id="language" class="form-control "> 
+						</select>
+					</div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-5 col-sm-5 col-sm-pull-1 ">
+                    <button id="modify" class="btn btn-info">点击修改</button>
+                </div>
+            </div>
+        </div>
+</body>
+<script type="text/javascript">
+
+$('document').ready(function () {
+    showLanguage();
+    showFilm();
+    $("#modify").click(function(){
+    	var  Film ={
+    			filmId:$("#filmId").val(),
+    			title:$("#title").val(),
+        		description:$("#description").val(),
+        		language:$("#language").val()
+    			
+    	}
+    	updateByFilm(Film)
+    })
+});
+function showLanguage(){
+	
+	$.ajax({
+        url: "/Exam-12829-20170106-1/language",
+        type: "GET",
+        dataType: "json",
+        data: {} ,
+        success: function (Data) {
+        	var html = "";
+        	for (var item of Data.data) {
+                html += "<option value='" + item.languageId + "'>"+ item.languageId +"："+ item.name + "</option>";
+            }
+            html = $("#language").html() + html;
+        	$("#language").html(html);
+        }
+})
+}
+
+
+function showFilm(){
+	$.ajax({
+        url: "/Exam-12829-20170106-1/film/getFilm",
+        type: "GET",
+        dataType: "json",
+        data: {} ,
+        success: function (Data) {
+        	for (var item of Data.data) {
+        		$("#filmId").val(item.filmId)
+        		$("#title").val(item.title)
+        		$("#description").val(item.description)
+        		$("#language").val(item.languageId)
+        	}
+        }
+	})
+}
+
+function updateByFilm(Film){
+	$.ajax({
+        url: "/Exam-12829-20170106-1/film/modify",
+        type: "GET",
+        dataType: "json",
+        data: Film ,
+        success: function (Data) {
+        	if(Data>0){
+        		alert("更新成功！");
+        		window.location.href="/Exam-12829-20170106-1/test.html";
+        	}else {
+				alert("更新失败");
+			}
+        }
+	})
+	
+}
+
+</script>
+</html>
