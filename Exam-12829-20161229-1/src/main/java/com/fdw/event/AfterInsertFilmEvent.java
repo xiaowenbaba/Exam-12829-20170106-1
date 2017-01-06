@@ -1,5 +1,6 @@
 package com.fdw.event;
 
+
 import org.springframework.context.ApplicationEvent;
 
 public class AfterInsertFilmEvent extends ApplicationEvent{

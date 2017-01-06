@@ -1,0 +1,224 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>列表展示界面</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min[1].css">
+    <link rel="stylesheet" href="static/css/common.css">
+    <script  type="text/javascript" src="static/jquery/jquery-1.11.2.js"></script>
+    <script src="static/jquery/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div>
+        <div class="form-horizontal" role="form">
+            <div class="form-group col-sm-6">
+                <label for="title" class="col-sm-4 control-label">title：</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="title" placeholder="请输入title">
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="description" class="col-sm-4 control-label">description：</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="description" placeholder="请输入description">
+                </div>
+            </div>
+            <div class="form-group">
+              
+                <div class="col-sm-offset-1 col-sm-2 col-sm-pull-1 text-left">
+                    <a href="/Exam-12829-20170106-1/insert.html" class=" btn-lg  btn-success">插入数据</a>
+                </div>
+                <label for="language" class="col-sm-7 control-label">语言</label>
+					<div class="col-sm-2">
+						<select id="language" class="form-control">
+							<option value="">请选择语言</option>
+						</select>
+					</div>
+              <div class="col-sm-offset-2 col-sm-10 col-sm-pull-1 text-right">
+                    <button id="query" class="btn btn-info">查询</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table id="userTable" class="table table-striped">
+            <thead>
+            <tr>
+                <th>电影ID</th>
+                <th>标题</th>
+                <th>描述</th>
+                <th>语言ID</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+	
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align:  center;">
+		<ul id="page" class="pagination">
+			<li><a href="#" title="">&laquo;</a></li>
+			<li><a href="#" title="">&raquo;</a></li>
+		</ul>
+		<div style="margin-bottom: 40px">
+			<select id="pageSize">
+				<option value="10">显示10条</option>
+				<option value="20">显示20条</option>
+				<option value="500">显示50条</option>
+			</select>
+			<button id ="showPageSize"  class="btn btn-info">点击显示条数按钮</button>
+			 <input id="currentNum" value="1"  placeholder="1">
+			 <button id ="getCurrent"  class="btn btn-info" >跳转到某页</button>
+		</div>
+	</div>
+    <script id="rowTemplate" type="application/html">
+        <tr>
+            <td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+        </tr>
+    </script>
+	
+    <script>
+    	var defaultArg = {
+           	title: "",
+           	description: "",
+           	languageId :null,
+            currentPage: 1,
+            pageSize: 10
+           };
+    	  var page = {
+              	totalPage : 0,
+              	currentPage : 0
+              };
+        $('document').ready(function () {
+            $('#query').click(function() {
+            	var conditions = {
+                    	title: $('#title').val(),
+                        description:$('#description').val(),
+                        languageId:$("#language").val()
+                };
+                defaultArg = $.extend({}, defaultArg, conditions);
+                query(conditions);
+            });
+            showLanguage();
+            query({
+            	title: $('#title').val(),
+            	description:$('#description').val()
+            });
+            setPageClick();
+            $("#getCurrent").click(function(){
+            	var currenVal = {
+            			currentPage: $('#currentNum').val(),
+                };
+            	defaultArg = $.extend({}, defaultArg, currenVal);
+            	 query(currenVal);
+            })
+           	 $("#showPageSize").click(function(){
+            	var pageSizeVal = {
+            			pageSize: $('#pageSize').val(),
+                };
+            	defaultArg = $.extend({}, defaultArg, pageSizeVal);
+            	 query(pageSizeVal);
+            })
+        });
+       function showLanguage(){
+        	$.ajax({
+                url: "/Exam-12829-20170106-1/language",
+                type: "GET",
+                dataType: "json",
+                data: {},
+                success: function (Data) {
+                	var html = "";
+                	for (var item of Data.data) {
+                        html += "<option value='" + item.languageId + "'>"+ item.languageId +"："+ item.name + "</option>";
+                    }
+                    html = $("#language").html() + html;
+                	$("#language").html(html);
+                }
+        })
+       }
+        function query(queryInfo) {
+            queryInfo = $.extend({}, defaultArg, queryInfo);
+            $.ajax({
+                url: "/Exam-12829-20170106-1/film",
+                type: "GET",
+                dataType: "json",
+                data: queryInfo,
+                success: function (Data) {
+                    // total rows
+                    $('#userTable tbody').empty();
+                    for (var item of Data.data) {
+                        var $template = $($('#rowTemplate').html()).clone();
+                        $template.children('td').eq(0).text(item.filmId);
+                        $template.children('td').eq(1).text(item.title);
+                        $template.children('td').eq(2).text(item.description);
+                        $template.children('td').eq(3).text(item.name);
+                        $template.children('td').eq(4).append("<a href='#'class='delete' title='"+item.filmId+"'>删除</a>");
+                        $template.children('td').eq(5).append("<a href='/Exam-12829-20170106-1/film/getId?id="+item.filmId+"' class='modify''>修改</a>");
+                        $('#userTable').append($template);
+                    }
+                    var html = "";
+                    for(var i = 1 ; i <= Data.totalPage ; i++){
+                        if(i == Data.currentPage){
+                        	html += "<li class='select'><a href='#' title='" + i + "'>" + i + "</a></li>";
+                        }else if(i == 1 || i == Data.totalPage){
+                        	html += "<li><a href='#' title='" + i + "'>" + i + "</a></li>";
+                        }else if((Data.currentPage - i) < 5 && (Data.currentPage - i) > -5){
+                        	html += "<li><a href='#' title='" + i + "'>" + i + "</a></li>";
+                        }else if((Data.currentPage - i) == 5 || (Data.currentPage - i) == -5){
+                        	html += "<li><span>...</span></li>";
+                        }
+                    }
+                    page.currentPage=Data.currentPage;
+                    page.totalPage=Data.totalPage;
+                    html = "<li><a href='#' title='" + (parseInt(Data.currentPage) - 1) + "'>&laquo;</a></li>" + html;
+                    html = html + "<li><a href='#' title='" + (parseInt(Data.currentPage) + 1) + "'>&raquo;</a></li>";
+                    $("#page").html(html);
+                    setPageClick();
+                }
+            })   
+        }
+        function setPageClick(){
+            $(".pagination li a").click(function (){
+                if(this.title < 1){
+					alert("当前为第一页。");
+                }else if(this.title > page.totalPage){
+                	alert("当前为最后一页。");
+                }else{
+                	query({
+                		currentPage : this.title
+                    });
+                }
+            });
+            $(".delete").click(function(){
+            	if(confirm("你确定要删除该记录吗？")){
+            		deleteById(this.title);
+            	}
+            });
+        }
+        function deleteById(title){
+        	var film ={
+        		 id : title
+        	};
+        	 $.ajax({
+                url: "/Exam-12829-20170106-1/film/delete",
+                type: "GET",
+                dataType: "json",
+                data: film,
+                success: function (Data) {
+                	
+                		alert(Data);
+                		query({currentPage:page.currentPage})                		
+                	
+                }
+        	 })
+        }
+    </script>
+</div>
+</body>
+</html>

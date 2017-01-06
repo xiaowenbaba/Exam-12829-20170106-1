@@ -7,6 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.fdw.entity.Film;
+import com.fdw.entity.Page;
 import com.fdw.service.FilmService;
 
 /**
@@ -22,7 +23,7 @@ public class App
     		FilmService filmService = (FilmService)beanFactory.getBean("filmService");
     		ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext)beanFactory;
     		configurableApplicationContext.start();
-    		Film film = new Film();
+    		/*Film film = new Film();
     		Scanner scanner = new Scanner(System.in);
     		System.out.println("请输入电影名称");
     		String title = scanner.nextLine();
@@ -42,7 +43,12 @@ public class App
     		if(language_id!=null){
     			film.setLanguageId(language_id);
     		}
-    		filmService.insertFilm(film);
+    		filmService.insertFilm(film);*/
+    		Page<Film > page  = new Page<Film>();
+    		page.setCurrentPage(1);
+    		Page<Film> page1=filmService.queryFilmListByPage(page);
+    		System.out.println(page1.getData().toString());
     		configurableApplicationContext.close();
+    		
     }
 }

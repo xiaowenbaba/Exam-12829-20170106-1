@@ -1,4 +1,4 @@
-package com.fdw.entity;
+package com.hand.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;

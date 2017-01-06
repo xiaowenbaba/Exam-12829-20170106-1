@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.fdw.mapper.FilmMapper">
-
 	<insert id="insertOneInToFilm" parameterType="com.fdw.entity.Film">
 	 insert into  film  (title,description,language_id) values(#{title},#{description},#{languageId})
 	</insert>
+	 <select id="queryFilmListByPage" parameterType="com.fdw.entity.Page" resultType="java.util.List">
+    	select  title , description , language_id  from  Film  order by Film_ID
+  	</select>
 </mapper>
